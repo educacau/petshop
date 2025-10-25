@@ -1,0 +1,39 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: petshop-postgres
+    environment:
+      POSTGRES_USER: petshop
+      POSTGRES_PASSWORD: petshop
+      POSTGRES_DB: petshop
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    container_name: petshop-backend
+    env_file: ./backend/.env.example
+    environment:
+      DATABASE_URL: postgresql://petshop:petshop@postgres:5432/petshop?schema=public
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: petshop-frontend
+    environment:
+      VITE_API_URL: http://backend:3000/api
+    ports:
+      - '5173:5173'
+    depends_on:
+      - backend
+volumes:
+  postgres-data:
+

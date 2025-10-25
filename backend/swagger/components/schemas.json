@@ -1,0 +1,193 @@
+{
+  "schemas": {
+    "ApiError": {
+      "type": "object",
+      "properties": {
+        "message": {"type": "string"},
+        "statusCode": {"type": "integer"},
+        "errors": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "role": {"type": "string", "enum": ["ADMIN", "STAFF", "CUSTOMER"]},
+        "phone": {"type": "string", "nullable": true},
+        "createdAt": {"type": "string", "format": "date-time"},
+        "updatedAt": {"type": "string", "format": "date-time"}
+      }
+    },
+    "AuthLoginRequest": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": {"type": "string", "format": "email"},
+        "password": {"type": "string", "minLength": 8}
+      }
+    },
+    "AuthLoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {"type": "string"},
+        "user": {"$ref": "#/components/schemas/User"}
+      }
+    },
+    "AuthRegisterRequest": {
+      "type": "object",
+      "required": ["name", "email", "password"],
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "password": {"type": "string", "minLength": 8},
+        "phone": {"type": "string"}
+      }
+    },
+    "UserCreateRequest": {
+      "type": "object",
+      "required": ["name", "email", "password", "role"],
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "password": {"type": "string", "minLength": 8},
+        "role": {"type": "string", "enum": ["ADMIN", "STAFF", "CUSTOMER"]},
+        "phone": {"type": "string"}
+      }
+    },
+    "UserUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "password": {"type": "string", "minLength": 8},
+        "role": {"type": "string", "enum": ["ADMIN", "STAFF", "CUSTOMER"]},
+        "phone": {"type": "string"}
+      }
+    },
+    "Pet": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "name": {"type": "string"},
+        "species": {"type": "string"},
+        "breed": {"type": "string", "nullable": true},
+        "age": {"type": "integer", "nullable": true},
+        "weight": {"type": "number", "nullable": true},
+        "medicalNotes": {"type": "string", "nullable": true},
+        "customerId": {"type": "string", "format": "uuid"},
+        "createdAt": {"type": "string", "format": "date-time"},
+        "updatedAt": {"type": "string", "format": "date-time"}
+      }
+    },
+    "PetCreateRequest": {
+      "type": "object",
+      "required": ["name", "species", "customerId"],
+      "properties": {
+        "name": {"type": "string"},
+        "species": {"type": "string"},
+        "breed": {"type": "string"},
+        "age": {"type": "integer"},
+        "weight": {"type": "number"},
+        "medicalNotes": {"type": "string"},
+        "customerId": {"type": "string", "format": "uuid"}
+      }
+    },
+    "PetUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "species": {"type": "string"},
+        "breed": {"type": "string"},
+        "age": {"type": "integer"},
+        "weight": {"type": "number"},
+        "medicalNotes": {"type": "string"}
+      }
+    },
+    "Schedule": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "serviceType": {"type": "string", "enum": ["BATH", "GROOMING", "BATH_GROOMING"]},
+        "status": {"type": "string", "enum": ["SCHEDULED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]},
+        "scheduledAt": {"type": "string", "format": "date-time"},
+        "price": {"type": "number", "nullable": true},
+        "notes": {"type": "string", "nullable": true},
+        "customerId": {"type": "string", "format": "uuid"},
+        "petId": {"type": "string", "format": "uuid"},
+        "staffId": {"type": "string", "format": "uuid", "nullable": true},
+        "createdAt": {"type": "string", "format": "date-time"},
+        "updatedAt": {"type": "string", "format": "date-time"}
+      }
+    },
+    "ScheduleCreateRequest": {
+      "type": "object",
+      "required": ["serviceType", "scheduledAt", "customerId", "petId"],
+      "properties": {
+        "serviceType": {"type": "string", "enum": ["BATH", "GROOMING", "BATH_GROOMING"]},
+        "scheduledAt": {"type": "string", "format": "date-time"},
+        "customerId": {"type": "string", "format": "uuid"},
+        "petId": {"type": "string", "format": "uuid"},
+        "staffId": {"type": "string", "format": "uuid"},
+        "price": {"type": "number"},
+        "notes": {"type": "string"}
+      }
+    },
+    "ScheduleUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "serviceType": {"type": "string", "enum": ["BATH", "GROOMING", "BATH_GROOMING"]},
+        "scheduledAt": {"type": "string", "format": "date-time"},
+        "customerId": {"type": "string", "format": "uuid"},
+        "petId": {"type": "string", "format": "uuid"},
+        "staffId": {"type": "string", "format": "uuid"},
+        "price": {"type": "number"},
+        "notes": {"type": "string"},
+        "status": {"type": "string", "enum": ["SCHEDULED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]}
+      }
+    },
+    "ScheduleUpdateStatusRequest": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {"type": "string", "enum": ["SCHEDULED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]}
+      }
+    },
+    "ScheduleCustomerRescheduleRequest": {
+      "type": "object",
+      "required": ["scheduledAt"],
+      "properties": {
+        "scheduledAt": {"type": "string", "format": "date-time"},
+        "notes": {"type": "string"}
+      }
+    },
+    "ScheduleCustomerCancelRequest": {
+      "type": "object",
+      "required": ["reason"],
+      "properties": {
+        "reason": {"type": "string"}
+      }
+    },
+    "BusinessSetting": {
+      "type": "object",
+      "properties": {
+        "openingTime": {"type": "integer", "minimum": 0, "maximum": 23},
+        "closingTime": {"type": "integer", "minimum": 0, "maximum": 23},
+        "slotDuration": {"type": "integer", "minimum": 15, "maximum": 180}
+      }
+    },
+    "BusinessSettingUpdateRequest": {
+      "type": "object",
+      "required": ["openingTime", "closingTime", "slotDuration"],
+      "properties": {
+        "openingTime": {"type": "integer", "minimum": 0, "maximum": 23},
+        "closingTime": {"type": "integer", "minimum": 0, "maximum": 23},
+        "slotDuration": {"type": "integer", "minimum": 15, "maximum": 180}
+      }
+    }
+  }
+}

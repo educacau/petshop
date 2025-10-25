@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --color-primary: #2563eb;
+    --color-primary-foreground: #f8fafc;
+    --color-primary-soft: rgba(37, 99, 235, 0.12);
+    --color-surface: #f8fafc;
+    --color-surface-muted: #eef2ff;
+    --color-surface-elevated: #ffffff;
+    --color-content: #0f172a;
+    --color-content-muted: #475569;
+    --color-content-strong: #020617;
+    --color-border: rgba(15, 23, 42, 0.08);
+    --color-border-muted: rgba(15, 23, 42, 0.04);
+    --color-accent: #0f172a;
+    --color-accent-foreground: #f8fafc;
+    --color-success: #16a34a;
+    --color-success-soft: rgba(22, 163, 74, 0.12);
+    --color-warning: #f97316;
+    --color-warning-soft: rgba(249, 115, 22, 0.12);
+    --color-danger: #dc2626;
+    --color-danger-soft: rgba(220, 38, 38, 0.12);
+    --shadow-soft: 0 10px 30px -15px rgba(15, 23, 42, 0.25);
+    --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --color-primary: #60a5fa;
+    --color-primary-foreground: #0b1120;
+    --color-primary-soft: rgba(96, 165, 250, 0.18);
+    --color-surface: #020617;
+    --color-surface-muted: #0b1220;
+    --color-surface-elevated: #111827;
+    --color-content: #e2e8f0;
+    --color-content-muted: #cbd5f5;
+    --color-content-strong: #f8fafc;
+    --color-border: rgba(148, 163, 184, 0.16);
+    --color-border-muted: rgba(148, 163, 184, 0.08);
+    --color-accent: #f8fafc;
+    --color-accent-foreground: #020617;
+    --color-success: #22c55e;
+    --color-success-soft: rgba(34, 197, 94, 0.16);
+    --color-warning: #fb923c;
+    --color-warning-soft: rgba(251, 146, 60, 0.18);
+    --color-danger: #f87171;
+    --color-danger-soft: rgba(248, 113, 113, 0.18);
+    --shadow-soft: 0 22px 45px -25px rgba(15, 23, 42, 0.45);
+  }
+
+  body {
+    @apply bg-surface text-base;
+    font-family: 'InterVariable', 'Inter', system-ui, sans-serif;
+    font-feature-settings:
+      'liga' 1,
+      'calt' 1;
+    background-color: var(--color-surface);
+    color: var(--color-content);
+  }
+
+  *:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+@layer components {
+  .app-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+  }
+
+  .app-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .app-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .app-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-primary-soft);
+    border-radius: 9999px;
+  }
+}

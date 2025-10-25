@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+  CUSTOMER
+}
+
+enum ServiceType {
+  BATH
+  GROOMING
+  BATH_GROOMING
+}
+
+enum ScheduleStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  role          UserRole       @default(CUSTOMER)
+  phone         String?
+  isActive      Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  pets          Pet[]
+  schedules     Schedule[]     @relation("customerSchedules")
+  assignedTasks Schedule[]     @relation("staffSchedules")
+}
+
+model Pet {
+  id             String    @id @default(cuid())
+  name           String
+  species        String
+  breed          String?
+  age            Int?
+  weight         Float?
+  medicalNotes   String?
+  customerId     String
+  customer       User      @relation(fields: [customerId], references: [id])
+  schedules      Schedule[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Schedule {
+  id           String         @id @default(cuid())
+  serviceType  ServiceType
+  scheduledAt  DateTime
+  status       ScheduleStatus @default(SCHEDULED)
+  price        Decimal?       @db.Decimal(10, 2)
+  notes        String?
+  customerId   String
+  petId        String
+  staffId      String?
+  customer     User           @relation("customerSchedules", fields: [customerId], references: [id])
+  pet          Pet            @relation(fields: [petId], references: [id])
+  staff        User?          @relation("staffSchedules", fields: [staffId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([customerId])
+  @@index([staffId])
+  @@index([scheduledAt])
+  @@unique([staffId, scheduledAt])
+}
+
+model BusinessSetting {
+  id            String   @id @default(cuid())
+  openingTime   Int
+  closingTime   Int
+  slotDuration  Int      @default(60)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

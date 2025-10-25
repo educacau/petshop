@@ -1,0 +1,312 @@
+{
+  "/schedules": {
+    "get": {
+      "tags": ["Schedules"],
+      "summary": "Listar agendamentos",
+      "description": "Restrito a administradores e equipe.",
+      "parameters": [
+        {
+          "name": "from",
+          "in": "query",
+          "schema": {"type": "string", "format": "date-time"}
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "schema": {"type": "string", "format": "date-time"}
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "schema": {"type": "string", "enum": ["SCHEDULED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]}
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Lista de agendamentos",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {"$ref": "#/components/schemas/Schedule"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "tags": ["Schedules"],
+      "summary": "Criar agendamento",
+      "description": "Restrito a administradores e equipe.",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/ScheduleCreateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Agendamento criado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/Schedule"}
+                }
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "Conflito com horario existente",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "/schedules/summary": {
+    "get": {
+      "tags": ["Schedules"],
+      "summary": "Resumo de agendamentos",
+      "description": "Restrito a administradores.",
+      "parameters": [
+        {
+          "name": "from",
+          "in": "query",
+          "schema": {"type": "string", "format": "date-time"}
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "schema": {"type": "string", "format": "date-time"}
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Resumo consolidado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "totalCompleted": {"type": "integer"},
+                      "revenue": {"type": "number"},
+                      "petsAttended": {"type": "integer"}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/schedules/me": {
+    "get": {
+      "tags": ["Schedules"],
+      "summary": "Listar agendamentos do usuario autenticado",
+      "responses": {
+        "200": {
+          "description": "Agendamentos do usuario",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {"$ref": "#/components/schemas/Schedule"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/schedules/{id}": {
+    "put": {
+      "tags": ["Schedules"],
+      "summary": "Atualizar agendamento",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/ScheduleUpdateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Agendamento atualizado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/Schedule"}
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Agendamento nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": ["Schedules"],
+      "summary": "Excluir agendamento",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "responses": {
+        "204": {"description": "Agendamento excluido"},
+        "404": {
+          "description": "Agendamento nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "/schedules/{id}/status": {
+    "patch": {
+      "tags": ["Schedules"],
+      "summary": "Atualizar status",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/ScheduleUpdateStatusRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {"description": "Status atualizado"},
+        "404": {
+          "description": "Agendamento nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "/schedules/{id}/customer/reschedule": {
+    "patch": {
+      "tags": ["Schedules"],
+      "summary": "Cliente reagendar horario",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/ScheduleCustomerRescheduleRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {"description": "Agendamento reagendado"},
+        "400": {
+          "description": "Horario indisponivel",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "/schedules/{id}/customer/cancel": {
+    "patch": {
+      "tags": ["Schedules"],
+      "summary": "Cliente cancelar agendamento",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/ScheduleCustomerCancelRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {"description": "Agendamento cancelado"},
+        "404": {
+          "description": "Agendamento nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

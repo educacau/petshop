@@ -1,0 +1,21 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="petBruckyLogoTitle petBruckyLogoDesc">
+  <title id="petBruckyLogoTitle">Pet Brucky logo</title>
+  <desc id="petBruckyLogoDesc">Circular badge with an orange paw print and the words Pet Brucky.</desc>
+  <circle cx="160" cy="160" r="144" stroke="#6B3F1F" stroke-width="12" fill="white"/>
+  <g fill="#EEA53D">
+    <ellipse cx="160" cy="180" rx="68" ry="60"/>
+    <ellipse cx="100" cy="126" rx="40" ry="48"/>
+    <ellipse cx="220" cy="126" rx="40" ry="48"/>
+    <ellipse cx="80" cy="198" rx="32" ry="38"/>
+    <ellipse cx="240" cy="198" rx="32" ry="38"/>
+  </g>
+  <g fill="#E38E1A">
+    <circle cx="132" cy="160" r="6"/>
+    <circle cx="200" cy="146" r="6"/>
+    <circle cx="160" cy="214" r="6"/>
+    <circle cx="98" cy="206" r="6"/>
+    <circle cx="220" cy="206" r="6"/>
+  </g>
+  <path d="M100 272c38 18 82 22 120 12" stroke="#6B3F1F" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <text x="104" y="288" font-family="'Playfair Display', 'Times New Roman', serif" font-size="38" fill="#6B3F1F" transform="rotate(-8 104 288)">Pet Brucky</text>
+</svg>

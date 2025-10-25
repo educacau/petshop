@@ -1,0 +1,10 @@
+process.env.NODE_ENV ??= 'test';
+process.env.PORT ??= '0';
+process.env.CORS_ALLOWED_ORIGINS ??= 'http://localhost:5173';
+process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/petshop_test?schema=public';
+process.env.JWT_SECRET ??= 'test-jwt-secret-key-with-32-characters';
+process.env.JWT_EXPIRES_IN ??= '3600';
+process.env.SWAGGER_BASE_URL ??= '/api-docs';
+process.env.SCHEDULER_TIMEZONE ??= 'UTC';
+process.env.EMAIL_FROM ??= 'test@petshop.dev';
+process.env.NOTIFICATION_DRIVER ??= 'console';

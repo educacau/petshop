@@ -1,0 +1,139 @@
+{
+  "/users": {
+    "get": {
+      "tags": ["Users"],
+      "summary": "Listar usuarios",
+      "description": "Disponivel para administradores e membros da equipe.",
+      "responses": {
+        "200": {
+          "description": "Lista de usuarios",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {"$ref": "#/components/schemas/User"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "description": "Token invalido",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    },
+    "post": {
+      "tags": ["Users"],
+      "summary": "Criar novo usuario",
+      "description": "Restrito a administradores.",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/UserCreateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Usuario criado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/User"}
+                }
+              }
+            }
+          }
+        },
+        "409": {
+          "description": "E-mail ja cadastrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  },
+  "/users/{id}": {
+    "put": {
+      "tags": ["Users"],
+      "summary": "Atualizar usuario",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/UserUpdateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Usuario atualizado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/User"}
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Usuario nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": ["Users"],
+      "summary": "Remover usuario",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "responses": {
+        "204": {"description": "Usuario removido"},
+        "404": {
+          "description": "Usuario nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "/settings": {
+    "get": {
+      "tags": ["Settings"],
+      "summary": "Consultar configuracoes de negocio",
+      "responses": {
+        "200": {
+          "description": "Configuracoes atuais",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/BusinessSetting"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": ["Settings"],
+      "summary": "Atualizar configuracoes de negocio",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/BusinessSettingUpdateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Configuracoes atualizadas",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/BusinessSetting"}
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Dados invalidos",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

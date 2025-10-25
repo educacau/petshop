@@ -1,0 +1,155 @@
+{
+  "/pets/me": {
+    "get": {
+      "tags": ["Pets"],
+      "summary": "Listar pets do cliente autenticado",
+      "responses": {
+        "200": {
+          "description": "Lista dos pets do cliente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {"$ref": "#/components/schemas/Pet"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/pets/customer/{customerId}": {
+    "get": {
+      "tags": ["Pets"],
+      "summary": "Listar pets por cliente",
+      "parameters": [
+        {
+          "name": "customerId",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Pets do cliente",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "array",
+                    "items": {"$ref": "#/components/schemas/Pet"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/pets": {
+    "post": {
+      "tags": ["Pets"],
+      "summary": "Cadastrar pet",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/PetCreateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Pet cadastrado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/Pet"}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "/pets/{id}": {
+    "put": {
+      "tags": ["Pets"],
+      "summary": "Atualizar pet",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {"$ref": "#/components/schemas/PetUpdateRequest"}
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Pet atualizado",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {"$ref": "#/components/schemas/Pet"}
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Pet nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    },
+    "delete": {
+      "tags": ["Pets"],
+      "summary": "Remover pet",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {"type": "string", "format": "uuid"}
+        }
+      ],
+      "responses": {
+        "204": {"description": "Pet removido"},
+        "404": {
+          "description": "Pet nao encontrado",
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ApiError"}
+            }
+          }
+        }
+      }
+    }
+  }
+}
